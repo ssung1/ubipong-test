@@ -1,0 +1,14 @@
+{
+  "name": "ubipong-test",
+  "version": "1.0.0",
+  "description": "Tester for UbiPong",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "author": "eatsleeppong.com",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^3.5.0"
+  }
+}
