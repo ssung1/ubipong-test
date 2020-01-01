@@ -1,8 +1,10 @@
 const environment = require('./helpers/environment.js')
 
-var http = require('http')
+const superagent = require('superagent')
 describe('api basic functions', () => {
-  it('can respond', () => {
-    http.get('http://example.com')    
+  it('should have Swagger page', async () => {
+    const url = new URL('swagger-ui.html', environment.apiHost)
+    const res = await superagent.get(url.href)
+    expect(res.status).toBe(200)
   })
 })
