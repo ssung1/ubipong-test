@@ -7,4 +7,10 @@ describe('api basic functions', () => {
     const res = await superagent.get(url.href)
     expect(res.status).toBe(200)
   })
+
+  it('should work', async () => {
+    const url = new URL('http://example.com')
+    const res = await superagent.get(url.href)
+    expect(res.status).toBe(200)
+  })
 })
