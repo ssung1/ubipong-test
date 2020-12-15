@@ -3,7 +3,7 @@ const superagent = require('superagent')
 
 describe('api basic functions', () => {
   it('should have Swagger page', async () => {
-    const url = new URL('swagger-ui.html', environment.apiHost)
+    const url = new URL('swagger-ui/index.html', environment.apiHost)
     const res = await superagent.get(url.href)
     expect(res.status).toBe(200)
   })
