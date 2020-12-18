@@ -49,8 +49,11 @@ describe('api services for event management', () => {
   })
 
   async function deleteChallongeTournament(challongeUrl) {
-    await superagent.delete(`${environment.challongeHost}/v1/tournaments/${challongeUrl}.json`)
-        .query()
+    return superagent.delete(`${environment.challongeHost}/v1/tournaments/${challongeUrl}.json`)
+        .query({
+          api_key: environment.challongeApiKey
+        })
+        .catch(err => {})
   }
 
   it('should be able to get a list of events in a tournament', async() => {
@@ -78,19 +81,19 @@ describe('api services for event management', () => {
 
   it('should be able to create an event on challonge.com', async() => {
     await deleteChallongeTournament(prelimGroup1.challongeUrl)
-    // await handler.dispatch(async () => {
-    //   const url = new URL(`${eventContext}`, environment.apiHost)
-    //   const response = await superagent.post(url).send(
-    //     {
-    //       ...prelimGroup1,
-    //       tournamentId
-    //     }
-    //   )
+    await handler.dispatch(async () => {
+      const url = new URL(`${eventContext}`, environment.apiHost)
+      const response = await superagent.post(url).send(
+        {
+          ...prelimGroup1,
+          tournamentId
+        }
+      )
 
-    //   expect(response.status).toBe(201)
-    //   expect(response.tournamentId).toBe(tournamentId)
-    //   expect(response.name).toBe(prelimGroup1.name)
-    // })
+      expect(response.status).toBe(201)
+      expect(response.body.tournamentId).toBe(tournamentId)
+      expect(response.body.name).toBe(prelimGroup1.name)
+    })
   })
 
   it('should be able to get an event details', async() => {
