@@ -1,6 +1,6 @@
-const environment = require('./helpers/environment.js')
+const environment = require('./config/environment.js')
 const superagent = require('superagent')
-const handler = require('./helpers/handler.js')
+const handler = require('./util/handler.js')
 
 // Tournament setup
 //
