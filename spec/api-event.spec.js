@@ -16,9 +16,11 @@ const eatSleepPongOpen = {
 }
 const prelimGroup1 = {
   name: 'Preliminary Group 1',
+  challongeUrl: 'esp_201903_pg_rr_1'
 }
 const prelimGroup2 = {
   name: 'Preliminary Group 2',
+  challongeUrl: 'esp_201903_pg_rr_2'
 }
 const championship = {
   name: 'Championship',
@@ -31,6 +33,7 @@ const bikiniBottomOpen = {
 describe('api services for event management', () => {
   const tournamentCrudContext = '/crud/tournaments'
   const eventCrudContext = '/crud/events'
+  const eventContext = '/rest/v0/events/'
   let tournamentId
 
   beforeEach(async () => {
@@ -44,6 +47,11 @@ describe('api services for event management', () => {
       tournamentId = tournament.body.tournamentId
     })
   })
+
+  async function deleteChallongeTournament(challongeUrl) {
+    await superagent.delete(`${environment.challongeHost}/v1/tournaments/${challongeUrl}.json`)
+        .query()
+  }
 
   it('should be able to get a list of events in a tournament', async() => {
     pending('finish later')
@@ -64,7 +72,25 @@ describe('api services for event management', () => {
       const event = await superagent.get(response.header.location)
 
       expect(event.body.tournamentId).toBe(tournamentId)
+      expect(event.body.name).toBe(prelimGroup1.name)
     })
+  })
+
+  it('should be able to create an event on challonge.com', async() => {
+    await deleteChallongeTournament(prelimGroup1.challongeUrl)
+    // await handler.dispatch(async () => {
+    //   const url = new URL(`${eventContext}`, environment.apiHost)
+    //   const response = await superagent.post(url).send(
+    //     {
+    //       ...prelimGroup1,
+    //       tournamentId
+    //     }
+    //   )
+
+    //   expect(response.status).toBe(201)
+    //   expect(response.tournamentId).toBe(tournamentId)
+    //   expect(response.name).toBe(prelimGroup1.name)
+    // })
   })
 
   it('should be able to get an event details', async() => {
