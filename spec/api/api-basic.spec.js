@@ -1,4 +1,4 @@
-const environment = require('./config/environment.js')
+const environment = require('../config/environment.js')
 const superagent = require('superagent')
 
 describe('api basic functions', () => {

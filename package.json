@@ -4,7 +4,9 @@
   "description": "Tester for UbiPong",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "test-canary": "jasmine --config=spec/support/jasmine-canary.json",
+    "test-api": "jasmine --config=spec/support/jasmine-api.json"
   },
   "author": "eatsleeppong.com",
   "license": "ISC",

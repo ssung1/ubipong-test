@@ -1,6 +1,6 @@
-const environment = require('./config/environment.js')
+const environment = require('../config/environment.js')
 const superagent = require('superagent')
-const handler = require('./util/handler.js')
+const handler = require('../util/handler.js')
 
 // Tournament setup
 //
@@ -49,18 +49,20 @@ describe('api services for event management', () => {
   })
 
   async function deleteChallongeTournament(challongeUrl) {
-    return superagent.delete(`${environment.challongeHost}/v1/tournaments/${challongeUrl}.json`)
-        .query({
-          api_key: environment.challongeApiKey
-        })
-        .catch(err => {})
+    await superagent.delete(`${environment.challongeHost}/v1/tournaments/${challongeUrl}.json`)
+      .query({
+        api_key: environment.challongeApiKey
+      })
   }
 
   it('should be able to get a list of events in a tournament', async() => {
     pending('finish later')
   })
 
-  it('should be able to create an event', async() => {
+  /**
+   * Ideally we should use the other API to create event both in our database and challonge.com at the same time
+   */
+  it('DEPRECATED: should be able to create an event linked to existing "tournament" on challonge.com', async() => {
     await handler.dispatch(async () => {
       const url = new URL(eventCrudContext, environment.apiHost)
       const response = await superagent.post(url).send(
