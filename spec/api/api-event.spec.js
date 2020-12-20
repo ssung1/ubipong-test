@@ -49,10 +49,16 @@ describe('api services for event management', () => {
   })
 
   async function deleteChallongeTournament(challongeUrl) {
-    await superagent.delete(`${environment.challongeHost}/v1/tournaments/${challongeUrl}.json`)
-      .query({
-        api_key: environment.challongeApiKey
-      })
+    try {
+      await superagent.delete(`${environment.challongeHost}/v1/tournaments/${challongeUrl}.json`)
+        .query({
+          api_key: environment.challongeApiKey
+        })
+    } catch (err) {
+      if(err.status != 404) {
+        throw err
+      }
+    }
   }
 
   it('should be able to get a list of events in a tournament', async() => {
