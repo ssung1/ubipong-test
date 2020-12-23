@@ -1,4 +1,4 @@
-const environment = require('./helpers/environment.js')
+const environment = require('./config/environment.js')
 
 describe('canary', () => {
   it('poo-tee-weet', () => {
