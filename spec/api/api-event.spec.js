@@ -61,10 +61,6 @@ describe('api services for event management', () => {
     }
   }
 
-  it('should be able to get a list of events in a tournament', async() => {
-    pending('finish later')
-  })
-
   /**
    * Ideally we should use the other API to create event both in our database and challonge.com at the same time
    */
@@ -102,30 +98,6 @@ describe('api services for event management', () => {
       expect(response.body.tournamentId).toBe(tournamentId)
       expect(response.body.name).toBe(prelimGroup1.name)
     })
-  })
-
-  it('should be able to get an event details', async() => {
-    pending('finish later')
-  })
-
-  it('should be able to get players in an event', async () => {
-    pending('finish later')
-  })
-
-  it('should be able to send event to challonge.com', async() => {
-    pending('finish later')
-  })
-
-  it('should be able to get match results from challonge.com', async() => {
-    pending('finish later')
-  })
-
-  it('should be able to build round robin grid from match results', async() => {
-    pending('finish later')
-  })
-
-  it('should be able to build single elimination bracket', async() => {
-    pending('finish later')
   })
 })
 
