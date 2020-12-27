@@ -7,8 +7,8 @@ const junitReporter = new jasmineReporters.JUnitXmlReporter({
 
 const terminalReporter = new jasmineReporters.TerminalReporter({
   verbosity: 3,
-  color: true,
+  color: false,
   showStack: true,
 })
 jasmine.getEnv().addReporter(junitReporter)
-jasmine.getEnv().addReporter(terminalReporter)
+//jasmine.getEnv().addReporter(terminalReporter)
