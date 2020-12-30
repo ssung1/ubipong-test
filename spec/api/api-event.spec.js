@@ -35,8 +35,12 @@ describe('api services for event management', () => {
   const eventCrudContext = '/crud/events'
   const eventContext = '/rest/v0/events/'
   let tournamentId
+  let originalTimeout
 
   beforeEach(async () => {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+
     await handler.dispatch(async () => {
       const url = new URL(tournamentCrudContext, environment.apiHost)
       const response = await superagent.post(url).send(eatSleepPongOpen)
@@ -46,6 +50,10 @@ describe('api services for event management', () => {
       const tournament = await superagent.get(response.header.location)
       tournamentId = tournament.body.tournamentId
     })
+  })
+
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   })
 
   async function deleteChallongeTournament(challongeUrl) {
