@@ -262,6 +262,22 @@ describe('can set up and run a tournament from start to finish, with a report of
     return updatedMatch
   }
 
+  async function getEventRoundRobinGrid(challongeUrl) {
+    return await handler.dispatch(async () => {
+      const url = new URL(
+        `rest/v0/events/${challongeUrl}/roundRobinGrid`,
+        environment.apiHost)
+      const response = await superagent.get(url)
+        .query({
+          challongeUrl
+        })
+
+      expect(response.status).toBe(200)
+
+      return response.body
+    })
+  }
+
   async function completeEvent(challongeUrl) {
     await handler.dispatch(async () => {
       const url = new URL(
@@ -374,6 +390,52 @@ describe('can set up and run a tournament from start to finish, with a report of
     await submitMatchResult(spongbobVsPatrick, event.challongeUrl)
     await submitMatchResult(patrickVsSquidward, event.challongeUrl)
     await submitMatchResult(squidwardVsSpongebob, event.challongeUrl)
+
+    // view round robin grid
+    const roundRobinGrid = await getEventRoundRobinGrid(event.challongeUrl)
+    expect(roundRobinGrid).toBeTruthy()
+    expect(roundRobinGrid.length).toBe(4) // number of players + 1 for header row
+    expect(roundRobinGrid[0].length).toBe(5) // number of players + 2 for header columns
+    expect(roundRobinGrid[0][0].type).toBe(11)
+    expect(roundRobinGrid[0][0].content).toBe('')
+    expect(roundRobinGrid[0][1].type).toBe(11)
+    expect(roundRobinGrid[0][1].content).toBe('')
+    expect(roundRobinGrid[0][2].type).toBe(14)
+    expect(roundRobinGrid[0][2].content).toBe('A')
+    expect(roundRobinGrid[0][3].type).toBe(14)
+    expect(roundRobinGrid[0][3].content).toBe('B')
+    expect(roundRobinGrid[0][4].type).toBe(14)
+    expect(roundRobinGrid[0][4].content).toBe('C')
+    expect(roundRobinGrid[1][0].type).toBe(14)
+    expect(roundRobinGrid[1][0].content).toBe('A')
+    expect(roundRobinGrid[1][1].type).toBe(14)
+    expect(roundRobinGrid[1][1].content).toBe(spongebob.name)
+    expect(roundRobinGrid[1][2].type).toBe(11)
+    expect(roundRobinGrid[1][2].content).toBe('')
+    expect(roundRobinGrid[1][3].type).toBe(12)
+    expect(roundRobinGrid[1][3].content).toBe('W 3 5 1')
+    expect(roundRobinGrid[1][4].type).toBe(11)
+    expect(roundRobinGrid[1][4].content).toBe('W 11 -5 9 9')
+    expect(roundRobinGrid[2][0].type).toBe(14)
+    expect(roundRobinGrid[2][0].content).toBe('B')
+    expect(roundRobinGrid[2][1].type).toBe(14)
+    expect(roundRobinGrid[2][1].content).toBe(patrick.name)
+    expect(roundRobinGrid[2][2].type).toBe(11)
+    expect(roundRobinGrid[2][2].content).toBe('L -3 -5 -1')
+    expect(roundRobinGrid[2][3].type).toBe(11)
+    expect(roundRobinGrid[2][3].content).toBe('')
+    expect(roundRobinGrid[2][4].type).toBe(12)
+    expect(roundRobinGrid[2][4].content).toBe('W 3 3 3')
+    expect(roundRobinGrid[3][0].type).toBe(14)
+    expect(roundRobinGrid[3][0].content).toBe('C')
+    expect(roundRobinGrid[3][1].type).toBe(14)
+    expect(roundRobinGrid[3][1].content).toBe(squidward.name)
+    expect(roundRobinGrid[3][2].type).toBe(12)
+    expect(roundRobinGrid[3][2].content).toBe('L -11 5 -9 -9')
+    expect(roundRobinGrid[3][3].type).toBe(11)
+    expect(roundRobinGrid[3][3].content).toBe('L -3 -3 -3')
+    expect(roundRobinGrid[3][4].type).toBe(11)
+    expect(roundRobinGrid[3][4].content).toBe('')
 
     // end match (remove underway_at)
     // do this on challonge.  not critical for now
