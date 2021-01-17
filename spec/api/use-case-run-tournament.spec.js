@@ -136,9 +136,9 @@ describe('can set up and run a tournament from start to finish, with a report of
   /**
    * returns event from our own API, which calls the challonge API
    */
-  async function getEvent(challongeUrl) {
+  async function getEvent(id) {
     return await handler.dispatch(async () => {
-      const url = new URL(`${eventContext}/${challongeUrl}`, environment.apiHost)
+      const url = new URL(`${eventContext}/${id}`, environment.apiHost)
       const response = await superagent.get(url)
 
       expect(response.status).toBe(200)
@@ -332,18 +332,15 @@ describe('can set up and run a tournament from start to finish, with a report of
     // information by challongeUrl
     // 
     // this makes sure that our event is linked to challonge.com
-    const eventWithoutPlayers = await getEvent(event.challongeUrl)
+    const eventWithoutPlayers = await getEvent(event.eventId)
 
-    const eventOnChallongeWithoutPlayers = 
-      await getEventOnChallonge(event.challongeUrl)
+    // verify event is on challonge
+    await getEventOnChallonge(event.challongeUrl)
 
     // add some participants (done on challonge.com)
     const playerList = await addPlayerList([
       spongebob, patrick, squidward
     ], event.challongeUrl)
-
-    const eventOnChallongeWithPlayers =
-      await getEventOnChallonge(event.challongeUrl)
 
     await startEvent(event.challongeUrl)
 
