@@ -109,7 +109,7 @@ describe('can set up and run a tournament from start to finish, with a report of
 
     expect(addedEvent).toBeTruthy()
     with(addedEvent) {
-      expect(eventId).toBeTruthy()
+      expect(id).toBeTruthy()
       expect(name).toBe(event.name)
       expect(tournamentId).toBe(tournamentId)
       expect(challongeUrl).toBe(event.challongeUrl)
@@ -326,13 +326,13 @@ describe('can set up and run a tournament from start to finish, with a report of
     const eventsInTournament =
       await getEventListByTournamentId(tournament.tournamentId)
     expect(eventsInTournament.length).toBe(1)
-    expect(eventsInTournament.map(e => e.eventId)).toContain(event.eventId)
+    expect(eventsInTournament.map(e => e.id)).toContain(event.id)
 
     // event management is done on challonge.com, so we want to get event
     // information by challongeUrl
     // 
     // this makes sure that our event is linked to challonge.com
-    const eventWithoutPlayers = await getEvent(event.eventId)
+    const eventWithoutPlayers = await getEvent(event.id)
 
     // verify event is on challonge
     await getEventOnChallonge(event.challongeUrl)
