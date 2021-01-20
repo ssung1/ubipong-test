@@ -48,7 +48,7 @@ describe('api services for event management', () => {
       expect(response.status).toBe(201)
 
       const tournament = await superagent.get(response.header.location)
-      tournamentId = tournament.body.tournamentId
+      tournamentId = tournament.body.id
     })
   })
 
@@ -68,28 +68,6 @@ describe('api services for event management', () => {
       }
     }
   }
-
-  /**
-   * Ideally we should use the other API to create event both in our database and challonge.com at the same time
-   */
-  it('DEPRECATED: should be able to create an event linked to existing "tournament" on challonge.com', async() => {
-    await handler.dispatch(async () => {
-      const url = new URL(eventCrudContext, environment.apiHost)
-      const response = await superagent.post(url).send(
-        {
-          ...prelimGroup1,
-          tournamentId
-        }
-      )
-
-      expect(response.status).toBe(201)
-
-      const event = await superagent.get(response.header.location)
-
-      expect(event.body.tournamentId).toBe(tournamentId)
-      expect(event.body.name).toBe(prelimGroup1.name)
-    })
-  })
 
   it('should be able to create an event on challonge.com', async() => {
     await deleteChallongeTournament(prelimGroup1.challongeUrl)

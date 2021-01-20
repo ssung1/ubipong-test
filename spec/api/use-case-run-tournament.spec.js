@@ -84,7 +84,7 @@ describe('can set up and run a tournament from start to finish, with a report of
 
     expect(addedTournament).toBeTruthy()
     with(addedTournament) {
-      expect(tournamentId).toBeTruthy()
+      expect(id).toBeTruthy()
       expect(name).toBe(tournament.name)
     }
 
@@ -320,11 +320,11 @@ describe('can set up and run a tournament from start to finish, with a report of
 
   it('run a tournament', async () => {
     const tournament = await addTournament(bikiniBottomOpen);
-    const event = await addEvent(preliminaryGroup1, tournament.tournamentId)
+    const event = await addEvent(preliminaryGroup1, tournament.id)
 
     // verify that our event is in the tournament
     const eventsInTournament =
-      await getEventListByTournamentId(tournament.tournamentId)
+      await getEventListByTournamentId(tournament.id)
     expect(eventsInTournament.length).toBe(1)
     expect(eventsInTournament.map(e => e.id)).toContain(event.id)
 
@@ -440,7 +440,7 @@ describe('can set up and run a tournament from start to finish, with a report of
     completeEvent(event.challongeUrl)
 
     // report scores
-    const tournamentResult = await getTournamentResult(tournament.tournamentId)
+    const tournamentResult = await getTournamentResult(tournament.id)
 
     expect(tournamentResult.tournamentName).toBe(bikiniBottomOpen.name)
     expect(tournamentResult.tournamentResultList).toContain({
