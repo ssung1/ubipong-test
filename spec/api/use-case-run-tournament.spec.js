@@ -308,6 +308,22 @@ describe('can set up and run a tournament from start to finish, with a report of
     })
   }
 
+  async function getTournamentUsattResult(tournamentId) {
+    return await handler.dispatch(async () => {
+      const url = new URL(
+        `rest/v0/tournaments/${tournamentId}/usatt-result`,
+        environment.apiHost)
+      const response = await superagent.get(url)
+        .query({
+          api_key: environment.challongeApiKey
+        })
+
+      expect(response.status).toBe(200)
+
+      return response.body
+    })
+  }
+
   beforeEach(async () => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
@@ -461,5 +477,9 @@ describe('can set up and run a tournament from start to finish, with a report of
       eventName: preliminaryGroup1.name,
       resultString: '11 -5 9 9',
     })
+
+    const tournamentUsattResult = await getTournamentUsattResult(tournament.id).split("\n")
+    expect(tournamentUsattResult[0].trim()).toBe("id?,patrick,spongebob,\"3,5,1\",Preliminary Group 1");
+    expect(tournamentUsattResult[1].trim()).toBe("id?,spongebob,squidward,\"11,-5,9,9\",Preliminary Group 1");
   })
 })
