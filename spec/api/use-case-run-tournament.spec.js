@@ -319,8 +319,9 @@ describe('can set up and run a tournament from start to finish, with a report of
         })
 
       expect(response.status).toBe(200)
+      expect(response.type).toBe('text/csv')
 
-      return response.body
+      return response.text
     })
   }
 
@@ -478,8 +479,10 @@ describe('can set up and run a tournament from start to finish, with a report of
       resultString: '11 -5 9 9',
     })
 
-    const tournamentUsattResult = await getTournamentUsattResult(tournament.id).split("\n")
-    expect(tournamentUsattResult[0].trim()).toBe("id?,patrick,spongebob,\"3,5,1\",Preliminary Group 1");
-    expect(tournamentUsattResult[1].trim()).toBe("id?,spongebob,squidward,\"11,-5,9,9\",Preliminary Group 1");
+    const tournamentUsattResult = (await getTournamentUsattResult(tournament.id)).split("\n");
+    expect(tournamentUsattResult.length).toBe(3);
+    expect(tournamentUsattResult[0].trim()).toBe('id?,patrick,squidward,"3,3,3",Preliminary Group 1');
+    expect(tournamentUsattResult[1].trim()).toBe('id?,spongebob,patrick,"3,5,1",Preliminary Group 1');
+    expect(tournamentUsattResult[2].trim()).toBe('id?,spongebob,squidward,"11,-5,9,9",Preliminary Group 1');
   })
 })
