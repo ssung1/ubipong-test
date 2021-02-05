@@ -359,11 +359,19 @@ describe('can set up and run a tournament from start to finish, with a report of
       spongebob, patrick, squidward
     ], event.challongeUrl)
 
-    await startEvent(event.challongeUrl)
+    // the status of the event should be "created" until it is started on challonge
+    const eventBeforeStarting = await getEvent(event.id)
+    expect(eventBeforeStarting.status).toBe('created')
 
+    await startEvent(event.challongeUrl)
     // on challonge, tournament state would be 'underway' after starting
     const eventOnChallongeStarted = 
       await getEventOnChallonge(event.challongeUrl)
+    expect(eventOnChallongeStarted.tournament.state).toBe('underway')
+
+    // the status of the event should be "started"
+    const eventAfterStarting = await getEvent(event.id)
+    expect(eventAfterStarting.status).toBe('started')
 
     // once event starts, we can print some match sheets
     const matchList = await getEventMatchList(event.challongeUrl)
