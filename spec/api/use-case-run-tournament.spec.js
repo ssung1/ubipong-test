@@ -379,26 +379,26 @@ describe('can set up and run a tournament from start to finish, with a report of
     expect(matchList.length).toBe(3)
     const simplifiedMatchListJustForVerification = matchList.map(
       m => Object.freeze({
-        player1Seed: m.player1Seed,
-        player2Seed: m.player2Seed,
+        player1SeedAsAlphabet: m.player1SeedAsAlphabet,
+        player2SeedAsAlphabet: m.player2SeedAsAlphabet,
         player1Name: m.player1Name,
         player2Name: m.player2Name,
     }))
     expect(simplifiedMatchListJustForVerification).toContain({
-      player1Seed: 'A',
-      player2Seed: 'B',
+      player1SeedAsAlphabet: 'A',
+      player2SeedAsAlphabet: 'B',
       player1Name: spongebob.name,
       player2Name: patrick.name,
     })
     expect(simplifiedMatchListJustForVerification).toContain({
-      player1Seed: 'B',
-      player2Seed: 'C',
+      player1SeedAsAlphabet: 'B',
+      player2SeedAsAlphabet: 'C',
       player1Name: patrick.name,
       player2Name: squidward.name,
     })
     expect(simplifiedMatchListJustForVerification).toContain({
-      player1Seed: 'C',
-      player2Seed: 'A',
+      player1SeedAsAlphabet: 'C',
+      player2SeedAsAlphabet: 'A',
       player1Name: squidward.name,
       player2Name: spongebob.name,
     })
