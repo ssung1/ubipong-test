@@ -32,8 +32,7 @@ const bikiniBottomOpen = {
 
 describe('api services for event management', () => {
   const tournamentCrudContext = '/crud/tournaments'
-  const eventCrudContext = '/crud/events'
-  const eventContext = '/rest/v0/events/'
+  const eventContext = '/rest/v0/events'
   let tournamentId
   let originalTimeout
 
@@ -72,7 +71,7 @@ describe('api services for event management', () => {
   it('should be able to create an event on challonge.com', async() => {
     await deleteChallongeTournament(prelimGroup1.challongeUrl)
     await handler.dispatch(async () => {
-      const url = new URL(`${eventContext}`, environment.apiHost)
+      const url = new URL(eventContext, environment.apiHost)
       const response = await superagent.post(url).send(
         {
           ...prelimGroup1,

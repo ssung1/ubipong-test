@@ -17,11 +17,11 @@ const bikiniBottomOpen = {
 }
 
 describe('api services for tournament management', () => {
-  const tournamentCrudContext = '/crud/tournaments'
+  const tournamentContext = '/rest/v0/tournaments'
 
   it('should be able to add and get a tournament', async () => {
     const addResponse = await handler.dispatch(async () => {
-      const url = new URL(tournamentCrudContext, environment.apiHost)
+      const url = new URL(tournamentContext, environment.apiHost)
       const response = await superagent.post(url).send(eatSleepPongOpen)
 
       expect(response.status).toBe(201)
@@ -37,4 +37,3 @@ describe('api services for tournament management', () => {
     })
   })
 })
-
