@@ -9,11 +9,11 @@ const handler = require('../util/handler.js')
 
 const eatSleepPongOpen = {
   name: 'Eat Sleep Pong Open 2019',
-  tournamentDate: '2019-03-15T00:00:00-0500'
+  tournamentDate: '2019-03-15T00:00:00Z'
 }
 const bikiniBottomOpen = {
   name: 'Bikini Bottom Open 2019',
-  tournamentDate: '2019-06-23T00:00:00-0500'
+  tournamentDate: '2019-06-23T00:00:00Z'
 }
 
 describe('api services for tournament management', () => {
@@ -30,7 +30,7 @@ describe('api services for tournament management', () => {
     })
 
     await handler.dispatch(async () => {
-      const url = `${tournamentContext}/${addResponse.body.id}`
+      const url = new URL(`${tournamentContext}/${addResponse.body.id}`, environment.apiHost)
       const response = await superagent.get(url)
 
       expect(response.status).toBe(200)
