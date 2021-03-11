@@ -30,7 +30,8 @@ describe('api services for tournament management', () => {
     })
 
     await handler.dispatch(async () => {
-      const response = await superagent.get(addResponse.header.location)
+      const url = `${tournamentContext}/${addResponse.body.id}`
+      const response = await superagent.get(url)
 
       expect(response.status).toBe(200)
       expect(response.body.name).toBe(eatSleepPongOpen.name)
