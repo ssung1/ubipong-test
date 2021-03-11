@@ -17,7 +17,7 @@ describe('can set up and run a tournament from start to finish, with a report of
 
   const bikiniBottomOpen = {
     name: 'Bikini Bottom Open 2019',
-    tournamentDate: '2019-06-23T00:00:00-05:00'
+    tournamentDate: '2019-06-23T00:00:00Z'
   }
 
   const preliminaryGroup1 = {
@@ -54,7 +54,6 @@ describe('can set up and run a tournament from start to finish, with a report of
     winner: 'spongebob'
   }
 
-  const tournamentCrudContext = '/crud/tournaments'
   const tournamentContext = 'rest/v0/tournaments'
   const eventCrudContext = 'crud/events'
   const eventContext = '/rest/v0/events'
@@ -74,7 +73,7 @@ describe('can set up and run a tournament from start to finish, with a report of
 
   async function addTournament(tournament) {
     const addedTournament = await handler.dispatch(async () => {
-      const url = new URL(tournamentCrudContext, environment.apiHost)
+      const url = new URL(tournamentContext, environment.apiHost)
       const response = await superagent.post(url).send(bikiniBottomOpen)
 
       expect(response.status).toBe(201)

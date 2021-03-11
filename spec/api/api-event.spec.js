@@ -12,7 +12,7 @@ const handler = require('../util/handler.js')
 
 const eatSleepPongOpen = {
   name: 'Eat Sleep Pong Open 2019',
-  tournamentDate: '2019-03-15T00:00:00-0500',
+  tournamentDate: '2019-03-15T00:00:00Z',
 }
 const prelimGroup1 = {
   name: 'Preliminary Group 1',
@@ -27,11 +27,11 @@ const championship = {
 }
 const bikiniBottomOpen = {
   name: 'Bikini Bottom Open 2019',
-  tournamentDate: '2019-06-23T00:00:00-0500',
+  tournamentDate: '2019-06-23T00:00:00Z',
 }
 
 describe('api services for event management', () => {
-  const tournamentCrudContext = '/crud/tournaments'
+  const tournamentContext = '/rest/v0/tournaments'
   const eventContext = '/rest/v0/events'
   let tournamentId
   let originalTimeout
@@ -41,13 +41,13 @@ describe('api services for event management', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
     await handler.dispatch(async () => {
-      const url = new URL(tournamentCrudContext, environment.apiHost)
+      const url = new URL(tournamentContext, environment.apiHost)
       const response = await superagent.post(url).send(eatSleepPongOpen)
 
       expect(response.status).toBe(201)
 
-      const tournament = await superagent.get(response.header.location)
-      tournamentId = tournament.body.id
+      // const tournament = await superagent.get(response.header.location)
+      tournamentId = response.body.id
     })
   })
 
