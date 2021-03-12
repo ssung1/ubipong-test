@@ -55,7 +55,6 @@ describe('can set up and run a tournament from start to finish, with a report of
   }
 
   const tournamentContext = 'rest/v0/tournaments'
-  const eventCrudContext = 'crud/events'
   const eventContext = '/rest/v0/events'
 
   async function deleteChallongeTournament(challongeUrl) {
@@ -119,16 +118,16 @@ describe('can set up and run a tournament from start to finish, with a report of
 
   async function getEventListByTournamentId(tournamentId) {
     return await handler.dispatch(async () => {
-      const url = new URL(`${eventCrudContext}/search/findByTournamentId`,
+      const url = new URL(`${eventContext}/search/find-by-tournament-id`,
         environment.apiHost)
       const response = await superagent.get(url)
         .query({
-          tournamentId
+          "tournament-id": tournamentId
         })
 
       expect(response.status).toBe(200)
 
-      return response.body._embedded.events
+      return response.body
     })
   }
 
