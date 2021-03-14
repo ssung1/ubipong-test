@@ -89,6 +89,21 @@ describe('can set up and run a tournament from start to finish, with a report of
     return addedTournament
   }
 
+  async function getTournamentList() {
+    const tournamentList = await handler.dispatch(async () => {
+      const url = new URL(tournamentContext, environment.apiHost)
+      const response = await superagent.get(url)
+
+      expect(response.status).toBe(201)
+      
+      return response.body
+    })
+  
+    with(tournamentList) {
+      expect(length).toBeGreaterThan(0)
+    }
+  }
+
   async function addEvent(event, tournamentId) {
     const addedEvent = await handler.dispatch(async () => {
       const url = new URL(eventContext, environment.apiHost)
