@@ -94,7 +94,7 @@ describe('can set up and run a tournament from start to finish, with a report of
       const url = new URL(tournamentContext, environment.apiHost)
       const response = await superagent.get(url)
 
-      expect(response.status).toBe(201)
+      expect(response.status).toBe(200)
       
       return response.body
     })
@@ -102,6 +102,8 @@ describe('can set up and run a tournament from start to finish, with a report of
     with(tournamentList) {
       expect(length).toBeGreaterThan(0)
     }
+
+    return tournamentList
   }
 
   async function addEvent(event, tournamentId) {
@@ -350,8 +352,10 @@ describe('can set up and run a tournament from start to finish, with a report of
 
   it('run a tournament', async () => {
     const tournament = await addTournament(bikiniBottomOpen);
-    const event = await addEvent(preliminaryGroup1, tournament.id)
+    // verify that our tournament is in the tournament list
+    expect((await getTournamentList()).filter(t => t.id == tournament.id).length).toBe(1)
 
+    const event = await addEvent(preliminaryGroup1, tournament.id)
     // verify that our event is in the tournament
     const eventsInTournament =
       await getEventListByTournamentId(tournament.id)
