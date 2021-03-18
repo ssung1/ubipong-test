@@ -96,7 +96,7 @@ describe('can set up and run a tournament from start to finish, with a report of
 
       expect(response.status).toBe(200)
       
-      return response.body
+      return response.body._embedded.tournaments
     })
   
     with(tournamentList) {
