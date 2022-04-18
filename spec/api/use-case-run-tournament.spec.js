@@ -16,44 +16,51 @@ describe('can set up and run a tournament from start to finish, with a report of
   // spongebob vs squidward: spongebob wins 13 -5 9 9
   // patrick vs squidward: patrick wins 3 3 3
 
-  const bikiniBottomOpen = {
+  const bikiniBottomOpen = Object.freeze({
     name: 'Bikini Bottom Open 2019',
     tournamentDate: '2019-06-23T00:00:00Z'
-  }
+  })
 
-  const preliminaryGroup1 = {
+  const preliminaryGroup1WrongInfo = Object.freeze({
+    name: "Preliminary Group 1 (wrong info)",
+    challongeUrl: "bb_201906_pg_rr_1", // can't have wrong info here because we don't support editing URL
+    startTime: "2000-01-01T17:00:00Z",
+  })
+
+  const preliminaryGroup1 = Object.freeze({
     name: "Preliminary Group 1",
-    challongeUrl: "bb_201906_pg_rr_1"
-  }
+    challongeUrl: "bb_201906_pg_rr_1",
+    startTime: "2019-06-23T19:00:00Z",
+  })
 
-  const spongebob = {
+  const spongebob = Object.freeze({
     name: 'spongebob'
-  }
-  const patrick = {
+  })
+  const patrick = Object.freeze({
     name: 'patrick'
-  }
-  const squidward = {
+  })
+  const squidward = Object.freeze({
     name: 'squidward'
-  }
+  })
 
-  const patrickVsSquidward = {
+  const patrickVsSquidward = Object.freeze({
     player1Name: 'patrick',
     player2Name: 'squidward',
     scores: '11-3,11-3,11-3',
     winner: 'patrick'
-  }
-  const spongbobVsPatrick = {
+  })
+  const spongbobVsPatrick = Object.freeze({
     player1Name: 'spongebob',
     player2Name: 'patrick',
     scores: '11-3,11-5,11-1',
     winner: 'spongebob'
-  }
-  const squidwardVsSpongebob = {
+  })
+  const squidwardVsSpongebob = Object.freeze({
     player1Name: 'squidward',
     player2Name: 'spongebob',
     scores: '11-13,11-5,9-11,9-11',
     winner: 'spongebob'
-  }
+  })
 
   const tournamentContext = 'rest/v0/tournaments'
   const eventContext = '/rest/v0/events'
@@ -118,6 +125,28 @@ describe('can set up and run a tournament from start to finish, with a report of
       )
 
       expect(response.status).toBe(201)
+
+      return response.body
+    })
+
+
+    expect(addedEvent).toBeTruthy()
+    with(addedEvent) {
+      expect(id).toBeTruthy()
+      expect(name).toBe(event.name)
+      expect(tournamentId).toBe(tournamentId)
+      expect(challongeUrl).toBe(event.challongeUrl)
+    }
+
+    return addedEvent
+  }
+
+  async function updateEvent(event) {
+    const addedEvent = await handler.dispatch(async () => {
+      const url = new URL(`${eventContext}/${event.id}`, environment.apiHost)
+      const response = await superagent.put(url).send(event)
+
+      expect(response.status).toBe(200)
 
       return response.body
     })
@@ -356,12 +385,18 @@ describe('can set up and run a tournament from start to finish, with a report of
     // verify that our tournament is in the tournament list
     expect((await getTournamentList()).filter(t => t.id == tournament.id).length).toBe(1)
 
-    const event = await addEvent(preliminaryGroup1, tournament.id)
+    const event = await addEvent(preliminaryGroup1WrongInfo, tournament.id)
     // verify that our event is in the tournament
     const eventsInTournament =
       await getEventListByTournamentId(tournament.id)
     expect(eventsInTournament.length).toBe(1)
     expect(eventsInTournament.map(e => e.id)).toContain(event.id)
+
+    // oops, we put the wrong info, so we need to update with the right info
+    await updateEvent(Object.freeze({
+      ...preliminaryGroup1,
+      id: event.id,
+    }))
 
     // event management is done on challonge.com, so we want to get event
     // information by challongeUrl
