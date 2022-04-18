@@ -10,3 +10,9 @@ Run
 ```
 npm test
 ```
+
+Reporting
+---------
+
+Settings are found in `spec/helpers/reports.js`.
+For VS Code, `terminalReporter` is not needed.  Use a `jasmine runner` instead.
