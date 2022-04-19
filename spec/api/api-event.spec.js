@@ -14,9 +14,13 @@ const eatSleepPongOpen = {
   name: 'Eat Sleep Pong Open 2019',
   tournamentDate: '2019-03-15T00:00:00Z',
 }
+const prelimGroup1WrongInfo = {
+  name: 'Preliminary Group 1 (wrong info)',
+  challongeUrl: 'esp_201903_pg_rr_1' // should have same url as prelimGroup1 because editing URL is not supported
+}
 const prelimGroup1 = {
   name: 'Preliminary Group 1',
-  challongeUrl: 'esp_201903_pg_rr_1'
+  challongeUrl: 'esp_201903_pg_rr_1' // should have same url as prelimGroup1WrongInfo because editing URL is not supported
 }
 const prelimGroup2 = {
   name: 'Preliminary Group 2',
@@ -68,21 +72,52 @@ describe('api services for event management', () => {
     }
   }
 
-  it('should be able to create an event on challonge.com', async() => {
+  it('should be able to create an event', async() => {
     await deleteChallongeTournament(prelimGroup1.challongeUrl)
     await handler.dispatch(async () => {
       const url = new URL(eventContext, environment.apiHost)
-      const response = await superagent.post(url).send(
-        {
-          ...prelimGroup1,
-          tournamentId
-        }
-      )
+      const response = await superagent.post(url).send({
+        ...prelimGroup1,
+        tournamentId
+      })
 
       expect(response.status).toBe(201)
       expect(response.body.tournamentId).toBe(tournamentId)
       expect(response.body.name).toBe(prelimGroup1.name)
     })
+  })
+
+  it('should be able to update an event', async() => {
+    await deleteChallongeTournament(prelimGroup1WrongInfo.challongeUrl)
+    const addedEvent = await handler.dispatch(async () => {
+      const url = new URL(eventContext, environment.apiHost)
+
+      const response = await superagent.post(url).send({
+        ...prelimGroup1WrongInfo,
+        tournamentId,
+      })
+
+      expect(response.status).toBe(201)
+      return response.body
+    })
+
+    expect(addedEvent.tournamentId).toBe(tournamentId)
+    expect(addedEvent.name).toBe(prelimGroup1WrongInfo.name)
+
+    const updatedEvent = await handler.dispatch(async () => {
+      const url = new URL(`${eventContext}/${addedEvent.id}`, environment.apiHost)
+
+      const response = await superagent.put(url).send({
+        ...addedEvent,
+        ...prelimGroup1,
+      })
+
+      expect(response.status).toBe(200)
+      return response.body
+    })
+
+    expect(updatedEvent.tournamentId).toBe(tournamentId)
+    expect(updatedEvent.name).toBe(prelimGroup1.name)
   })
 })
 
