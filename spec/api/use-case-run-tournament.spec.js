@@ -394,8 +394,8 @@ describe('can set up and run a tournament from start to finish, with a report of
 
     // oops, we put the wrong info, so we need to update with the right info
     await updateEvent(Object.freeze({
+      ...event,
       ...preliminaryGroup1,
-      id: event.id,
     }))
 
     // event management is done on challonge.com, so we want to get event
