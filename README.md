@@ -3,7 +3,8 @@ UbiPong Tester
 
 For the tests to work, the API service must be running.
 
-Edit `spec/config/environment.js` to set the API host.
+Set environment `UBIPONG_API_HOST` to the API host.  Alternatively, edit
+`spec/config/environment.js`.
 
 Run
 
