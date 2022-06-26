@@ -307,14 +307,14 @@ describe('can set up and run a tournament from start to finish, with a report of
     return updatedMatch
   }
 
-  async function getEventRoundRobinGrid(challongeUrl) {
+  async function getEventRoundRobinGrid(id) {
     return await handler.dispatch(async () => {
       const url = new URL(
-        `rest/v0/events/${challongeUrl}/roundRobinGrid`,
+        `rest/v0/events/${id}/roundRobinGrid`,
         environment.apiHost)
       const response = await superagent.get(url)
         .query({
-          challongeUrl
+          id
         })
 
       expect(response.status).toBe(200)
@@ -467,7 +467,7 @@ describe('can set up and run a tournament from start to finish, with a report of
     await submitMatchResult(squidwardVsSpongebob, event.challongeUrl)
 
     // view round robin grid
-    const roundRobinGrid = await getEventRoundRobinGrid(event.challongeUrl)
+    const roundRobinGrid = await getEventRoundRobinGrid(event.id)
     expect(roundRobinGrid).toBeTruthy()
     expect(roundRobinGrid.length).toBe(4) // number of players + 1 for header row
     expect(roundRobinGrid[0].length).toBe(5) // number of players + 2 for header columns
