@@ -1,10 +1,11 @@
 UbiPong Tester
 ==============
 
-For the tests to work, the API service must be running.
+Part of <https://github.com/ssung1/ubipong-ecosystem>.  It is easier
+to run the test from there.
 
-Set environment `UBIPONG_API_HOST` to the API host.  Alternatively, edit
-`spec/config/environment.js`.
+See `spec/config/environment.js` to see which environment variables are 
+required.
 
 Run
 
