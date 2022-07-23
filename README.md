@@ -1,9 +1,8 @@
-# UbiPong Tester
+# Ubipong Tournament Manager API Tester
 
-Part of <https://github.com/ssung1/ubipong-ecosystem>.  It is easier
-to run the test from there.
+Part of <https://github.com/ssung1/ubipong-ecosystem>.
 
-## Environment
+## Test
 
 This test is for [Ubipong API](https://github.com/ssung1/ubipong-api),
 so make sure it is running before testing.
@@ -16,16 +15,13 @@ an account)
 
 Alternatively, edit `spec/config/environment.js`.
 
-## Test
-
 Run
 
 ```
 npm test
 ```
 
-Reporting
----------
+### Reporting
 
 Settings are found in `spec/helpers/reports.js`.
 For VS Code, `terminalReporter` is not needed.  Use a `jasmine runner` instead.
