@@ -14,7 +14,7 @@
     "jasmine": "^3.5.0"
   },
   "dependencies": {
-    "jasmine-reporters": "^2.3.2",
+    "jasmine-reporters": "^2.5.0",
     "superagent": "^5.1.3"
   }
 }
